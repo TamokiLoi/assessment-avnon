@@ -1,0 +1,31 @@
+<section>
+    <div style="margin-bottom: 50px;">
+        <div *ngIf="questions.length > 0">
+            <div *ngFor="let question of questions; let indexQuestion = index"
+                style="margin-bottom: 20px;">
+                <div style="margin-bottom: 10px;">
+                    <strong>{{question.title}}</strong>
+                </div>
+                <ng-container *ngIf="question.answers.length
+                > 0">
+                    <div *ngFor="let answer of question.answers; let indexAnswer = index">
+                        <span>{{answer.title}}</span>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="question.answers.length === 0">
+                    <div>
+                        <p>{{question.answer}}</p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div *ngIf="!questions.length">
+            No data. Please back to Form Builder to add question and answer!
+        </div>
+    </div>
+    <div>
+        <button mat-raised-button color="primary" [routerLink]="'../builder'">
+            Back to Form Builder
+        </button>
+    </div>
+</section>

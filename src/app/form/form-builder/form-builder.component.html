@@ -1,0 +1,47 @@
+<section>
+    <div [formGroup]="questionsForm">
+        <ng-container formArrayName="questions">
+            <div *ngFor="let question of questionsForm.get('questions')?.controls; let indexQuestion = index">
+                <div>
+                    <div>
+                        {{question.get('title').value}} <span class="required-color"
+                            *ngIf="question.get('isRequired').value">*</span>
+                    </div>
+                    <ng-container [formGroup]="question">
+                        <ng-container *ngIf="!question.get('isSingleAnswer').value">
+                            <ng-container formArrayName="answers">
+                                <div *ngFor="let answer of question.get('answers')?.controls; let indexAnswers = index">
+                                    <ng-container [formGroup]="answer">
+                                        <mat-checkbox formControlName="isSelect">
+                                            {{answer.get('title').value}}
+                                        </mat-checkbox>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="question.get('isSingleAnswer').value">
+                            <mat-form-field style="width: 100%;">
+                                <textarea matInput formControlName="answer" rows="3" [name]="'answer' + indexQuestion"
+                                    style="width: 100%; resize: none;">
+                                </textarea>
+                            </mat-form-field>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div>
+        <button mat-raised-button color="primary" (click)="openDialog()">
+            Add Question
+        </button>
+    </div>
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    <div>
+        <button mat-raised-button color="primary" [disabled]="questionsForm.invalid" (click)="submitForm()">
+            Submit and Review my answer
+        </button>
+    </div>
+</section>

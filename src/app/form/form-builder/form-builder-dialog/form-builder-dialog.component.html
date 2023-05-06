@@ -1,0 +1,62 @@
+<h1 mat-dialog-title>Add Question Dialog</h1>
+<div mat-dialog-content>
+    <div [formGroup]="questionForm">
+        <!-- <div class="">
+            <div>
+                Please tell us about yourself <span class="required-color">*</span>
+            </div>
+            <mat-form-field style="width: 100%;">
+                <textarea matInput formControlName="infoDescription" rows="3" name="smsVisitorMessage"
+                    style="width: 100%; resize: none;">
+                </textarea>
+            </mat-form-field>
+        </div> -->
+        <div>
+            <mat-form-field style="width: 100%;">
+                <mat-label>Question type</mat-label>
+                <mat-select formControlName="questionType" style="width: 100%;"
+                    (selectionChange)="changeQuestionType($event.value)">
+                    <mat-option *ngFor="let item of QUESTION_TYPE" [value]="item.value">
+                        {{item.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="">
+            <mat-form-field style="width: 100%;">
+                <mat-label>Type question here</mat-label>
+                <input type="text" matInput formControlName="questionName">
+            </mat-form-field>
+        </div>
+        <ng-container *ngIf="questionForm.get('questionType').value === QUESTION_TYPE[0].value">
+            <div>
+                <ng-container formArrayName="answerOptions">
+                    <div *ngFor="let answer of questionForm.get('answerOptions')?.controls; let indexAnswer = index"
+                        style="display: flex; justify-content: flex-start;">
+                        <mat-form-field style="width: 90%; margin-right: 2px;">
+                            <input matInput type="text" placeholder="Add Answer Option" [formControlName]="indexAnswer">
+                        </mat-form-field>
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <button mat-mini-fab color="warn"
+                                *ngIf="questionForm.get('answerOptions')?.controls.length > 1"
+                                (click)="removeAnswer(indexAnswer)">
+                                <mat-icon>remove</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div *ngIf="questionForm.get('answerOptions').controls.length < 5">
+                <button mat-raised-button color="primary" (click)="addAnswerForm()">
+                    Add Answer
+                </button>
+            </div>
+        </ng-container>
+        <mat-checkbox formControlName="isRequired">
+            This field is required
+        </mat-checkbox>
+    </div>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" (click)="submitForm()" [disabled]="checkDisabled()">Submit</button>
+</div>
